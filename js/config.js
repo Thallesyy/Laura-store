@@ -25,7 +25,7 @@ const LOJA = {
   contato: {
     whatsapp: "5551999999999",           // só números, com 55 + DDD
     telefone: "(51) 99999-9999",
-    instagram: "laurastore",
+    instagram: "_laura.godinh0",
     email: "contato@laurastore.com.br",
     endereco: "Rua Exemplo, 123 — Centro, Sapucaia do Sul/RS",
     horario: [
