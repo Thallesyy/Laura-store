@@ -213,11 +213,16 @@ body:not(.tab-inicio) .topbar { display: none; }
 .obj {
   position: relative; width: 62%; height: 62%;
   transform-style: preserve-3d;
-  animation: spin var(--dur, 7s) linear infinite;
+  animation: spin var(--dur, 7s) infinite;
   animation-delay: var(--delay, 0s);
 }
 .obj.manual { animation: none; }
-@keyframes spin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+/* Devagar de frente e de costas, rápido de lado (onde a imagem fica fina) */
+@keyframes spin {
+  0%   { transform: rotateY(0deg);   animation-timing-function: cubic-bezier(.55, .12, .45, .88); }
+  50%  { transform: rotateY(180deg); animation-timing-function: cubic-bezier(.55, .12, .45, .88); }
+  100% { transform: rotateY(360deg); }
+}
 .layer {
   position: absolute; inset: 0; display: grid; place-items: center;
   font-size: 44cqw; line-height: 1;
@@ -233,11 +238,14 @@ body:not(.tab-inicio) .topbar { display: none; }
   width: 46%; height: 7%; margin-left: -23%;
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(0, 0, 0, .28), transparent);
-  animation: shadow var(--dur, 7s) linear infinite;
+  animation: shadow var(--dur, 7s) infinite;
   animation-delay: var(--delay, 0s);
 }
 .shadow.manual { animation: none; }
-@keyframes shadow { 0%, 50%, 100% { transform: scaleX(1); } 25%, 75% { transform: scaleX(.55); } }
+@keyframes shadow {
+  0%, 50%, 100% { transform: scaleX(1); animation-timing-function: ease-in; }
+  25%, 75% { transform: scaleX(.55); animation-timing-function: ease-out; }
+}
 .paused .obj, .paused .shadow, .paused .float { animation-play-state: paused; }
 
 .badge-360 {

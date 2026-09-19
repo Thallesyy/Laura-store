@@ -128,13 +128,15 @@ function priceHTML(p) {
   return `<div class="price"><b>${brl(p.preco)}</b>${off ? `<s>${brl(p.precoAntigo)}</s><span class="off">-${off}%</span>` : ""}</div>`;
 }
 
-/* Várias camadas empilhadas em profundidade = objeto com "espessura" ao girar */
-function objHTML(p, manual) {
+/* Várias camadas empilhadas em profundidade = objeto com "espessura" ao girar.
+   Camadas coladas (< 1px) para a lateral parecer sólida, e não listrada. */
+function objHTML(p, manual, detalhe) {
   const inner = p.imagem ? `<img src="${esc(p.imagem)}" alt="" draggable="false">` : esc(p.emoji || "🛍️");
-  const n = 9;
+  const n = detalhe ? 25 : 11;
+  const gap = detalhe ? 0.2 : 0.45; // em cqw (% da largura do quadro)
   let layers = "";
   for (let i = 0; i < n; i++) {
-    const z = (i - (n - 1) / 2) * 0.6;
+    const z = (i - (n - 1) / 2) * gap;
     const face = i === 0 || i === n - 1;
     layers += `<span class="layer${face ? "" : " inner"}" style="transform:translateZ(${z.toFixed(2)}cqw)">${inner}</span>`;
   }
@@ -154,7 +156,7 @@ function stageHTML(p, { cls = "", badge = true, manual = false, hint = false } =
       <div class="float">
         ${frames
           ? `<div class="frames"><img src="${esc(p.fotos360[0])}" alt="${esc(p.nome)}" draggable="false"></div>`
-          : objHTML(p, manual)}
+          : objHTML(p, manual, cls.includes("detail"))}
       </div>
       <div class="shadow${manual || frames ? " manual" : ""}"></div>
       ${hint ? `<span class="detail-hint">${ICON.hand}Arraste para girar 360°</span>` : ""}
@@ -364,7 +366,8 @@ function makeViewer(stage, p, startAng = 0) {
       if (!dragging) {
         const target = !reduceMotion && performance.now() > resumeAt ? AUTO * dir : 0;
         vel += (target - vel) * Math.min(1, dt * 2.2); // inércia + volta ao giro automático
-        ang += vel * dt;
+        const s = Math.sin(ang * Math.PI / 180);
+        ang += vel * (0.45 + 1.75 * s * s) * dt; // passa rápido pela lateral (onde a imagem fica fina)
       }
       apply();
     },
