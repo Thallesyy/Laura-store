@@ -92,6 +92,7 @@ function renderHeader() {
   insta.textContent = "instagram.com/" + LOJA.contato.instagram;
   insta.href = "https://instagram.com/" + LOJA.contato.instagram;
   $("#lojaDesde").textContent = LOJA.desde;
+  $("#lojaDesde").parentElement.hidden = !LOJA.desde;
   $("#lojaNumeros").innerHTML =
     `<span><b>${PRODUTOS.length}</b> Produtos</span>` +
     LOJA.numeros.map(n => `<span><b>${esc(n.valor)}</b> ${esc(n.rotulo)}</span>`).join("");
@@ -987,7 +988,7 @@ renderers.perfil = () => {
     <div class="menu-title">Fale com a loja</div>
     ${contatoHTML()}
     <div class="menu-title">Dúvidas frequentes</div>
-    ${LOJA.faq.map(([q, a]) => `<details class="faq"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("")}
+    ${LOJA.faq.map(([q, a]) => `<details class="faq${a ? "" : " vazio"}"><summary>${esc(q)}</summary>${a ? `<p>${esc(a)}</p>` : ""}</details>`).join("")}
     <p class="muted pad" style="text-align:center;font-size:13px;margin-top:12px">© ${new Date().getFullYear()} ${esc(LOJA.nome)}</p>`;
 };
 

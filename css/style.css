@@ -365,6 +365,8 @@ details.faq summary { padding: 14px 16px; cursor: pointer; font-weight: 600; lis
 details.faq summary::after { content: "+"; color: var(--accent); font-size: 20px; line-height: 1; transition: transform .2s; }
 details.faq[open] summary::after { transform: rotate(45deg); }
 details.faq p { padding: 0 16px 14px; color: var(--muted); }
+details.faq.vazio summary { pointer-events: none; }
+details.faq.vazio summary::after { content: none; }
 .hours { padding: 4px 16px 12px; display: grid; gap: 4px; }
 .hours div { display: flex; justify-content: space-between; }
 
